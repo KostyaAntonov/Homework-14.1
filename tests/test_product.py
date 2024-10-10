@@ -1,45 +1,45 @@
 import pytest
+from src.product import Product
 
 
-class Product:
-    def __init__(self, name, description, price, quantity):
-        self.name = name
-        self.description = description
-        self.price = price
-        self.quantity = quantity
-
-
+# Фикстура для создания экземпляра продукта
 @pytest.fixture
-def product1():
-    return Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
+def product():
+    return Product("Телефон", "Смартфон с хорошей камерой", 999.99, 10)
 
 
+# Фикстура для создания словаря продукта
 @pytest.fixture
-def product2():
-    return Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+def product_dict():
+    return {
+        "name": "Ноутбук",
+        "description": "Игровой ноутбук",
+        "price": 1499.99,
+        "quantity": 5
+    }
 
 
-@pytest.fixture
-def product3():
-    return Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
+def test_product_creation(product):
+    assert product.name == "Телефон"
+    assert product.description == "Смартфон с хорошей камерой"
+    assert product.price == 999.99
+    assert product.quantity == 10
 
 
-def test_product1_attributes(product1):
-    assert product1.name == "Samsung Galaxy S23 Ultra"
-    assert product1.description == "256GB, Серый цвет, 200MP камера"
-    assert product1.price == 180000.0
-    assert product1.quantity == 5
+def test_new_product_creation(product_dict):
+    product = Product.new_product(product_dict)
+    assert product.name == "Ноутбук"
+    assert product.description == "Игровой ноутбук"
+    assert product.price == 1499.99
+    assert product.quantity == 5
 
 
-def test_product2_attributes(product2):
-    assert product2.name == "Iphone 15"
-    assert product2.description == "512GB, Gray space"
-    assert product2.price == 210000.0
-    assert product2.quantity == 8
+def test_price_setter(product):
+    product.price = 1200.00
+    assert product.price == 1200.00
 
+    product.price = -500  # Попробуем установить отрицательную цену
+    assert product.price == 1200.00  # Цена не должна измениться
 
-def test_product3_attributes(product3):
-    assert product3.name == "Xiaomi Redmi Note 11"
-    assert product3.description == "1024GB, Синий"
-    assert product3.price == 31000.0
-    assert product3.quantity == 14
+    product.price = 0  # Попробуем установить нулевую цену
+    assert product.price == 1200.00  # Цена не должна измениться

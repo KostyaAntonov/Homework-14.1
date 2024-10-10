@@ -1,41 +1,51 @@
 import pytest
-
-from tests.test_product import product1, product2, product3
-
-
-class Category:
-    category_count = 0
-    product_count = 0
-
-    def __init__(self, name: str, description: str, products: list):
-        self.name = name
-        self.description = description
-        self.products = products
-        Category.category_count += 1
-        Category.product_count += len(products)
+from src.product import Product
+from src.category import Category
 
 
 @pytest.fixture
-def category1(product1, product2, product3):
+def sample_products():
+    return [
+        Product("Телефон", "Смартфон с хорошей камерой", 999.99, 10),
+        Product("Ноутбук", "Игровой ноутбук", 1499.99, 5)
+    ]
+
+
+@pytest.fixture
+def category(sample_products):
     Category.category_count = 0
     Category.product_count = 0
-    return Category(
-        "Смартфоны",
-        "Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
-        [product1, product2, product3],
+    return Category("Электроника", "Категория электроники", sample_products)
+
+
+def test_category_initialization(category, sample_products):
+    assert category.name == "Электроника"
+    assert category.description == "Категория электроники"
+    assert category.products == "Телефон, 999.99 руб. Остаток: 10 шт.Ноутбук, 1499.99 руб. Остаток: 5 шт."
+
+    assert Category.category_count == 1
+    assert Category.product_count == len(sample_products)
+
+
+def test_add_product(category):
+    new_product = Product("Планшет", "Мощный планшет", 499.99, 7)
+    category.add_product(new_product)
+
+    assert category.products == (
+        "Телефон, 999.99 руб. Остаток: 10 шт."
+        "Ноутбук, 1499.99 руб. Остаток: 5 шт."
+        "Планшет, 499.99 руб. Остаток: 7 шт."
     )
 
-
-def test_category_creation(category1, product1, product2, product3):
-    assert category1.name == "Смартфоны"
-    assert category1.description == ("Смартфоны, как средство не только коммуникации, но и получения дополнительных "
-                                     "функций для удобства жизни")
-    assert category1.products == [product1, product2, product3]
-
-
-def test_category_count(category1):
-    assert Category.category_count == 1
-
-
-def test_product_count(category1):
     assert Category.product_count == 3
+
+
+def test_category_count_increment():
+    Category.category_count = 0
+    Category.product_count = 0
+
+    # Создадим несколько категорий
+    Category("Электроника", "Категория электроники", [])
+    Category("Бытовая техника", "Категория бытовой техники", [])
+
+    assert Category.category_count == 2
