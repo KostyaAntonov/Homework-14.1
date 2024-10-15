@@ -39,11 +39,11 @@ def test_price_setter(product):
     product.price = 1200.00
     assert product.price == 1200.00
 
-    product.price = -500  # Попробуем установить отрицательную цену
-    assert product.price == 1200.00  # Цена не должна измениться
+    product.price = -500
+    assert product.price == 1200.00
 
-    product.price = 0  # Попробуем установить нулевую цену
-    assert product.price == 1200.00  # Цена не должна измениться
+    product.price = 0
+    assert product.price == 1200.00
 
 
 def test_str(class_product: Product) -> None:

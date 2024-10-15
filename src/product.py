@@ -28,7 +28,9 @@ class Product:
             self.__price = price
 
     def __str__(self) -> str:
+        """Выводит продукт, цена и остаток"""
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other: "Product") -> Any:
+        """Возвращает сумму произведений цены на количество для двух объектов"""
         return self.__price * self.quantity + other.__price * other.quantity
