@@ -23,12 +23,12 @@ class Category:
 
     @property
     def products(self) -> str:
-
         str_products = ""
         for product in self.__products:
             str_products += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
         return str_products
 
     def __str__(self) -> str:
-        """Выводит количество продуктов"""
-        return f"{self.name}, количество продуктов: {Category.product_count} шт."
+        """Выводит общее количество товаров"""
+        total_quantity = sum(product.quantity for product in self.__products)
+        return f"{self.name}, общее количество товаров: {total_quantity} шт."
