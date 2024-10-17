@@ -4,8 +4,8 @@ from src.product import Product
 class Category:
     """Класс, который представляет категории"""
 
-    category_count = None
-    product_count = None
+    category_count = 0
+    product_count = 0
 
     def __init__(self, name: str, description: str, products: list):
         """Метод, который инициализирует экземпляры класса"""
@@ -28,7 +28,10 @@ class Category:
     def products(self) -> str:
         str_products = ""
         for product in self.__products:
-            str_products += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
+            str_products += (
+                f"{product.name}, {product.price} руб. "
+                f"Остаток: {product.quantity} шт.\n"
+            )
         return str_products
 
     def __str__(self) -> str:
