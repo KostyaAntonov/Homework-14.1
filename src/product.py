@@ -4,17 +4,20 @@ from typing import Any
 class Product:
     """Класс, который представляет продукты"""
 
-    def __init__(self, name: str, description: str, price: float, quantity: int):
+    def __init__(
+        self, name: str, description: str, price: float, quantity: int, color: str
+    ):
         """Метод, который инициализирует экземпляры класса"""
         self.name = name
         self.description = description
         self.__price = price
         self.quantity = quantity
+        self.color = color
 
     @classmethod
     def new_product(cls, product_dict: dict) -> "Product":
-        name, description, price, quantity = product_dict.values()
-        return cls(name, description, price, quantity)
+        name, description, price, quantity, color = product_dict.values()
+        return cls(name, description, price, quantity, color)
 
     @property
     def price(self) -> float:
@@ -33,4 +36,6 @@ class Product:
 
     def __add__(self, other: "Product") -> Any:
         """Возвращает сумму произведений цены на количество для двух объектов"""
-        return self.__price * self.quantity + other.__price * other.quantity
+        if type(other) is Product:
+            return self.__price * self.quantity + other.price * other.quantity
+        raise TypeError

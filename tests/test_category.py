@@ -1,58 +1,46 @@
 import pytest
-
 from src.category import Category
 from src.product import Product
 
 
 @pytest.fixture
-def sample_products():
-    return [
-        Product("Телефон", "Смартфон с хорошей камерой", 999.99, 10),
-        Product("Ноутбук", "Игровой ноутбук", 1499.99, 5),
-    ]
-
-
-@pytest.fixture
-def category(sample_products):
-    Category.category_count = 0
-    Category.product_count = 0
-    return Category("Электроника", "Категория электроники", sample_products)
-
-
-def test_category_initialization(category, sample_products):
-    assert category.name == "Электроника"
-    assert category.description == "Категория электроники"
-    assert (
-        category.products
-        == "Телефон, 999.99 руб. Остаток: 10 шт.Ноутбук, 1499.99 руб. Остаток: 5 шт."
+def class_category() -> Category:
+    return Category(
+        "Смартфоны",
+        "Смартфоны, как средство коммуникации и получения дополнительных функций",
+        [
+            Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, "Зеленый"),
+            Product("Iphone 15", "512GB, Gray space", 210000.0, 8, "Зеленый"),
+            Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14, "Зеленый"),
+        ],
     )
 
-    assert Category.category_count == 1
-    assert Category.product_count == len(sample_products)
+
+def test_init(class_category: Category) -> None:
+    assert class_category.name == "Смартфоны"
+    assert class_category.description == "Смартфоны, как средство коммуникации и получения дополнительных функций"
+    assert class_category.products == (
+        "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.Iphone 15, 210000.0 "
+        "руб. Остаток: 8 шт.Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт."
+    )
+    assert class_category.category_count == 1
+    assert class_category.product_count == 3
 
 
-def test_add_product(category):
-    new_product = Product("Планшет", "Мощный планшет", 499.99, 7)
-    category.add_product(new_product)
-
-    assert category.products == (
-        "Телефон, 999.99 руб. Остаток: 10 шт."
-        "Ноутбук, 1499.99 руб. Остаток: 5 шт."
-        "Планшет, 499.99 руб. Остаток: 7 шт."
+def test_add_product(class_category: Category) -> None:
+    class_category.add_product(Product('55" QLED 4K', "Фоновая подсветка", 123000.0, 7, "Зеленый"))
+    assert class_category.products == (
+        "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.Iphone 15, 210000.0 "
+        'руб. Остаток: 8 шт.Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.55" '
+        "QLED 4K, 123000.0 руб. Остаток: 7 шт."
     )
 
-    assert Category.product_count == 3
 
-
-def test_category_count_increment():
-    Category.category_count = 0
-    Category.product_count = 0
-
-    # Создадим несколько категорий
-    Category("Электроника", "Категория электроники", [])
-    Category("Бытовая техника", "Категория бытовой техники", [])
-
-    assert Category.category_count == 2
+def test_products(class_category: Category) -> None:
+    assert class_category.products == (
+        "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.Iphone 15, 210000.0 "
+        "руб. Остаток: 8 шт.Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт."
+    )
 
 
 def test_str(class_category: Category) -> None:
