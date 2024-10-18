@@ -30,11 +30,11 @@ class Category:
         for product in self.__products:
             str_products += (
                 f"{product.name}, {product.price} руб. "
-                f"Остаток: {product.quantity} шт.\n"
+                f"Остаток: {product.quantity} шт."
             )
         return str_products
 
     def __str__(self) -> str:
         """Выводит общее количество товаров"""
         total_quantity = sum(product.quantity for product in self.__products)
-        return f"{self.name}, общее количество товаров: {total_quantity} шт."
+        return f"{self.name}, количество продуктов: {total_quantity} шт."
