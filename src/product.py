@@ -1,12 +1,15 @@
 from typing import Any
 
+from src.BaseProduct import BaseProduct
+from src.Mixin import Mixin
 
-class Product:
+
+class Product(Mixin, BaseProduct):
     """Класс, который представляет продукты"""
 
     def __init__(
-        self, name: str, description: str,
-        price: float, quantity: int, color: str
+            self, name: str, description: str,
+            price: float, quantity: int, color: str
     ):
         """Метод, который инициализирует экземпляры класса"""
         self.name = name
@@ -14,6 +17,7 @@ class Product:
         self.__price = price
         self.quantity = quantity
         self.color = color
+        super().__init__()
 
     @classmethod
     def new_product(cls, product_dict: dict) -> "Product":
