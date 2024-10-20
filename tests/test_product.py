@@ -17,6 +17,11 @@ def test_init(class_product: Product) -> None:
     assert class_product.color == "Зеленый"
 
 
+def test_init_error() -> None:
+    with pytest.raises(ValueError):
+        Product("Iphone 15", "512GB, Gray space", 210000.0, 0, "Зеленый")
+
+
 def test_new_product(class_product: Product) -> None:
     class_product.new_product(
         {

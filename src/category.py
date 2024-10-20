@@ -38,3 +38,11 @@ class Category:
         """Выводит общее количество товаров"""
         total_quantity = sum(product.quantity for product in self.__products)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
+
+    def price_value(self) -> float:
+        try:
+            price_value: float = sum(i.price for i in self.__products) / len(self.__products)
+        except ZeroDivisionError:
+            return 0.0
+        else:
+            return price_value

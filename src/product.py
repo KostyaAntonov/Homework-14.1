@@ -12,6 +12,8 @@ class Product(Mixin, BaseProduct):
             price: float, quantity: int, color: str
     ):
         """Метод, который инициализирует экземпляры класса"""
+        if quantity <= 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
         self.name = name
         self.description = description
         self.__price = price
